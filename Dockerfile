@@ -152,6 +152,9 @@ COPY datumaro/ ${HOME}/datumaro
 
 RUN python3 -m pip install --no-cache-dir -r ${HOME}/datumaro/requirements.txt
 
+#Copy a custom script that creates our superuser account before starting the server:
+COPY createSuperuser.sh ${HOME}/
+
 # Binary option is necessary to correctly apply the patch on Windows platform.
 # https://unix.stackexchange.com/questions/239364/how-to-fix-hunk-1-failed-at-1-different-line-endings-message
 RUN patch --binary -p1 < ${HOME}/cvat/apps/engine/static/engine/js/3rdparty.patch
@@ -162,6 +165,7 @@ USER ${USER}
 
 RUN mkdir data share media keys logs /tmp/supervisord
 RUN python3 manage.py collectstatic
+
 
 EXPOSE 8080 8443
 ENTRYPOINT ["/usr/bin/supervisord"]
