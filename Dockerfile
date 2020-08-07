@@ -5,6 +5,7 @@ ARG https_proxy
 ARG no_proxy
 ARG socks_proxy
 ARG TZ
+ARG USER_ID
 
 ENV TERM=xterm \
     http_proxy=${http_proxy}   \
@@ -68,7 +69,7 @@ RUN apt-get update && \
 ENV USER=${USER}
 ENV HOME /home/${USER}
 WORKDIR ${HOME}
-RUN adduser --shell /bin/bash --disabled-password --gecos "" ${USER} && \
+RUN adduser --uid ${USER_ID} --shell /bin/bash --disabled-password --gecos "" ${USER} && \
     if [ -z ${socks_proxy} ]; then \
         echo export "GIT_SSH_COMMAND=\"ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30\"" >> ${HOME}/.bashrc; \
     else \
@@ -144,7 +145,8 @@ RUN if [ "$CLAM_AV" = "yes" ]; then \
 
 COPY ssh ${HOME}/.ssh
 COPY utils ${HOME}/utils
-COPY cvat/ ${HOME}/cvat
+#This is mounted as a volume instead, so that we can change files and they'l show automatically:
+# COPY cvat/ ${HOME}/cvat
 COPY cvat-core/ ${HOME}/cvat-core
 COPY cvat-data/ ${HOME}/cvat-data
 COPY tests ${HOME}/tests
@@ -155,17 +157,20 @@ RUN python3 -m pip install --no-cache-dir -r ${HOME}/datumaro/requirements.txt
 #Copy a custom script that creates our superuser account before starting the server:
 COPY createSuperuser.sh ${HOME}/
 
-# Binary option is necessary to correctly apply the patch on Windows platform.
-# https://unix.stackexchange.com/questions/239364/how-to-fix-hunk-1-failed-at-1-different-line-endings-message
-RUN patch --binary -p1 < ${HOME}/cvat/apps/engine/static/engine/js/3rdparty.patch
+##I just applied this patch to the original files since it was getting in the way of the volume mount:
+# # Binary option is necessary to correctly apply the patch on Windows platform.
+# # https://unix.stackexchange.com/questions/239364/how-to-fix-hunk-1-failed-at-1-different-line-endings-message
+# COPY cvat/apps/engine/static/engine/js/3rdparty.patch /tmp/
+# RUN patch --binary -p1 < /tmp/3rdparty.patch
 RUN chown -R ${USER}:${USER} .
 
 # RUN all commands below as 'django' user
 USER ${USER}
 
 RUN mkdir data share media keys logs /tmp/supervisord
-RUN python3 manage.py collectstatic
 
+#This has been moved to supervisord.conf, so it can run when the cvat mount is available:
+# RUN python3 manage.py collectstatic
 
 EXPOSE 8080 8443
 ENTRYPOINT ["/usr/bin/supervisord"]
