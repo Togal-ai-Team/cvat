@@ -109,6 +109,7 @@
 
   // while dragging
   DragHandler.prototype.drag = function(e){
+    this.m = this.el.node.getScreenCTM().inverse();
 
     var box = this.getBBox()
       , p   = this.transformPoint(e)

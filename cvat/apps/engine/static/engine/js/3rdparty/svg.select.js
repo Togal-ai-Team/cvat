@@ -160,6 +160,7 @@ SelectHandler.prototype.drawPoints = function () {
                 ev.preventDefault ? ev.preventDefault() : ev.returnValue = false;
                 ev.stopPropagation();
 
+                if (ev.which != 1) return false;
                 var x = ev.pageX || ev.touches[0].pageX;
                 var y = ev.pageY || ev.touches[0].pageY;
                 _this.el.fire('point', {x: x, y: y, i: k, event: ev});
@@ -361,6 +362,7 @@ SelectHandler.prototype.cleanup = function () {
         // stop watching the element, remove the selection
         this.rectSelection.set.each(function () {
             this.remove();
+            SVG.off(this.node);
         });
 
         this.rectSelection.set.clear();
@@ -371,6 +373,7 @@ SelectHandler.prototype.cleanup = function () {
         // Remove all points, clear the set, stop watching the element
         this.pointSelection.set.each(function () {
             this.remove();
+            SVG.off(this.node);
         });
 
         this.pointSelection.set.clear();
@@ -379,8 +382,8 @@ SelectHandler.prototype.cleanup = function () {
 
     if (!this.pointSelection.isSelected && !this.rectSelection.isSelected) {
         this.nested.remove();
+        SVG.off(this.nested.node);
         delete this.nested;
-
     }
 };
 
