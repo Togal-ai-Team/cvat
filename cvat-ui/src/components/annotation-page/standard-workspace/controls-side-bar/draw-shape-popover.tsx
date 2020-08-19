@@ -93,39 +93,6 @@ function DrawShapePopoverComponent(props: Props): JSX.Element {
             </Row>
             { shapeType === ShapeType.POLYGON && <DEXTRPlugin /> }
             {
-                shapeType === ShapeType.RECTANGLE && (
-                    <>
-                        <Row>
-                            <Col>
-                                <Text className='cvat-text-color'> Drawing method </Text>
-                            </Col>
-                        </Row>
-                        <Row type='flex' justify='space-around'>
-                            <Col>
-                                <Radio.Group
-                                    style={{ display: 'flex' }}
-                                    value={rectDrawingMethod}
-                                    onChange={onChangeRectDrawingMethod}
-                                >
-                                    <Radio
-                                        value={RectDrawingMethod.CLASSIC}
-                                        style={{ width: 'auto' }}
-                                    >
-                                        By 2 Points
-                                    </Radio>
-                                    <Radio
-                                        value={RectDrawingMethod.EXTREME_POINTS}
-                                        style={{ width: 'auto' }}
-                                    >
-                                        By 4 Points
-                                    </Radio>
-                                </Radio.Group>
-                            </Col>
-                        </Row>
-                    </>
-                )
-            }
-            {
                 shapeType === ShapeType.CUBOID && (
                     <>
                         <Row>
@@ -189,13 +156,6 @@ function DrawShapePopoverComponent(props: Props): JSX.Element {
                     <Tooltip title={`Press ${repeatShapeShortcut} to draw again`}>
                         <Button onClick={onDrawShape}>
                             Shape
-                        </Button>
-                    </Tooltip>
-                </Col>
-                <Col span={12}>
-                    <Tooltip title={`Press ${repeatShapeShortcut} to draw again`}>
-                        <Button onClick={onDrawTrack}>
-                            Track
                         </Button>
                     </Tooltip>
                 </Col>

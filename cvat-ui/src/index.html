@@ -11,6 +11,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Togal.ai Annotation Tool (TAT)</title>
+
+        <style>
+            /* This is Andy's css overriding. */
+            /* Hide some things we don't need that clutter stuff: */
+            .cvat-annotation-header-player-group, /* The frame navigation at the top */
+            .cvat-workspace-selector, /* The "Standard/Attribute Annotation/Tag annotation" selector */
+            #root > section > main > section > header > div > div.ant-col.cvat-annotation-header-right-group > button:nth-child(2), /* info button on right */
+            .cvat-header, /* Top header with CVAT, tasks, github, etc */
+            div.ant-col.cvat-annotation-header-left-group > button.ant-btn.cvat-annotation-header-button.ant-dropdown-trigger.ant-btn-link, /* menu */
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(3), /* toolbar buttons on the left */
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(11),
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(12),
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(13),
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(14),
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(15),
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(16),
+            aside.cvat-canvas-controls-sidebar.ant-layout-sider.ant-layout-sider-light > div > i:nth-child(17),
+            div.ant-collapse-content.ant-collapse-content-active > div > div > label:nth-child(7), /* Black borders */
+            div.ant-collapse-content.ant-collapse-content-active > div > div > label:nth-child(8), /* Show bitmap */
+            div.ant-collapse-content.ant-collapse-content-active > div > div > label:nth-child(9), /* Show projections */
+            div.ant-row-flex.ant-row-flex-space-around.ant-row-flex-middle,  /* Toolbar in each object */
+            div.ant-col.ant-col-2, /* three dots on right of each object for a menu. and lock and visibility icons */
+            div.cvat-objects-sidebar-states-header, /* Annotations filters and Sort by */
+            div.cvat-canvas-z-axis-wrapper /* Vertical drag bar in lower right that navigates frames I think */
+                {
+                display: none !important;
+                }
+        </style>
     </head>
 
     <body>
