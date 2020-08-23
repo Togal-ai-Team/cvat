@@ -1,10 +1,4 @@
 server {
-    listen       80;
-    server_name  _ default;
-    return       404;
-}
-
-server {
     listen       443 ssl;
     ssl_certificate /etc/letsencrypt/live/label.togal.ai/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/label.togal.ai/privkey.pem;
