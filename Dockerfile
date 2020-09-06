@@ -174,7 +174,7 @@ RUN mkdir data share media keys logs /tmp/supervisord
 # RUN python3 manage.py collectstatic
 
 #Kills our container if we cannot
-HEALTHCHECK --start-period=60s --interval=60s --timeout=20s CMD curl --fail -s -v --max-time 10 http://127.0.0.1:8080/auth/logout || ( echo 'killing.'; kill 1 ; exit 1 )
+HEALTHCHECK --start-period=60s --interval=60s --timeout=20s CMD curl --fail -s -v --max-time 10 http://127.0.0.1:8080/auth/logout || ( echo 'killing.'; kill -9 1 ; exit 1 )
 
 EXPOSE 8080 8443
 ENTRYPOINT ["/usr/bin/supervisord"]
