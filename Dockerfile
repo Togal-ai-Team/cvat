@@ -165,6 +165,10 @@ COPY createSuperuser.sh ${HOME}/
 # RUN patch --binary -p1 < /tmp/3rdparty.patch
 RUN chown -R ${USER}:${USER} .
 
+#add tini, a program that runs things in a way that makes them easy to kill if something goes wrong:
+COPY ./tini /tini
+RUN chmod o+rx /tini
+
 # RUN all commands below as 'django' user
 USER ${USER}
 
@@ -175,9 +179,6 @@ RUN mkdir data share media keys logs /tmp/supervisord
 
 #Kills our container if we cannot
 HEALTHCHECK --start-period=60s --interval=60s --timeout=20s CMD curl --fail -s -v --max-time 10 http://127.0.0.1:8080/auth/logout || ( echo 'killing.'; kill 1; sleep 5; kill -9 1 ; exit 1 )
-
-#add tini, a program that runs things in a way that makes them easy to kill if something goes wrong:
-COPY ./tini /tini
 
 EXPOSE 8080 8443
 ENTRYPOINT ["/tini", "--", "/usr/bin/supervisord"]
