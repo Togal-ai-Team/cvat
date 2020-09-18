@@ -1,4 +1,4 @@
-FROM cvat
+FROM cvat/server
 
 ENV DJANGO_CONFIGURATION=testing
 USER root
@@ -14,6 +14,7 @@ RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &
         nodejs \
         python3-dev \
         ruby \
+        xvfb \
         && \
     rm -rf /var/lib/apt/lists/*;
 
@@ -26,16 +27,7 @@ COPY .coveragerc .
 # RUN all commands below as 'django' user
 USER ${USER}
 
-RUN mkdir -p tests && cd tests && npm install \
-        eslint \
-        eslint-detailed-reporter \
-        karma \
-        karma-chrome-launcher \
-        karma-coveralls \
-        karma-coverage \
-        karma-junit-reporter \
-        karma-qunit \
-        qunit; \
+RUN mkdir -p tests && cd tests && CI=true npm install cypress; \
     echo "export PATH=~/tests/node_modules/.bin:${PATH}" >> ~/.bashrc;
 
 ENTRYPOINT []

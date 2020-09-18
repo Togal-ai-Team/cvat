@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-import React from 'react';
 import { connect } from 'react-redux';
 
 import ModelRunnerModalComponent from 'components/model-runner-modal/model-runner-modal';
@@ -32,10 +31,7 @@ interface DispatchToProps {
     runInference(
         taskInstance: any,
         model: Model,
-        mapping: {
-            [index: string]: string;
-        },
-        cleanOut: boolean,
+        body: object,
     ): void;
     getModels(): void;
     closeDialog(): void;
@@ -59,12 +55,9 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
         runInference(
             taskInstance: any,
             model: Model,
-            mapping: {
-                [index: string]: string;
-            },
-            cleanOut: boolean,
+            body: object,
         ): void {
-            dispatch(startInferenceAsync(taskInstance, model, mapping, cleanOut));
+            dispatch(startInferenceAsync(taskInstance, model, body));
         },
         getModels(): void {
             dispatch(getModelsAsync());
@@ -75,14 +68,7 @@ function mapDispatchToProps(dispatch: any): DispatchToProps {
     });
 }
 
-
-function ModelRunnerModalContainer(props: StateToProps & DispatchToProps): JSX.Element {
-    return (
-        <ModelRunnerModalComponent {...props} />
-    );
-}
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ModelRunnerModalContainer);
+)(ModelRunnerModalComponent);
