@@ -4,8 +4,8 @@ FROM nginx:stable-alpine
 COPY ./tini /tini
 RUN chmod o+rx /tini
 
-#Kills our container if we cannot reach it.  I need two different ones since we use different ports in prod or dev mode:
-HEALTHCHECK --start-period=60s --interval=60s --timeout=20s \
+##Kills our container if we cannot reach it.  I need two different ones since we use different ports in prod or dev mode:
+#HEALTHCHECK --start-period=60s --interval=60s --timeout=20s \
     CMD ( curl -k --fail -s -q -o /dev/null  https://127.0.0.1 || \
           curl --fail -s -q -o /dev/null --max-time 10 http://localhost) \
         || ( echo 'killing.'; kill 1; sleep 5; kill -9 1 ; exit 1 )
