@@ -49,6 +49,7 @@ RUN apt-get update && \
         pkg-config \
         python3-dev \
         python3-pip \
+        reptyr \
         tzdata \
         p7zip-full \
         git \
