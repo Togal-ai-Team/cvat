@@ -120,10 +120,6 @@ COPY createSuperuser.sh ${HOME}/
 # RUN patch --binary -p1 < /tmp/3rdparty.patch
 RUN chown -R ${USER}:${USER} .
 
-#add tini, a program that runs things in a way that makes them easy to kill if something goes wrong:
-COPY ./tini /tini
-RUN chmod o+rx /tini
-
 # RUN all commands below as 'django' user
 USER ${USER}
 
@@ -132,8 +128,5 @@ RUN mkdir data share media keys logs /tmp/supervisord
 #This has been moved to supervisord.conf, so it can run when the cvat mount is available:
 # RUN python3 manage.py collectstatic
 
-#Kills our container if we cannot
-HEALTHCHECK --start-period=60s --interval=60s --timeout=20s CMD curl --fail -s --max-time 10 --data-binary '{"proxy":false}' 'https://label.togal.ai/api/v1/auth/logout' || ( echo 'killing.'; kill 1; sleep 5; kill -9 1 ; exit 1 )
-
 EXPOSE 8080 8443
-ENTRYPOINT ["/tini", "--", "/usr/bin/supervisord"]
+ENTRYPOINT ["/usr/bin/supervisord"]
