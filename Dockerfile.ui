@@ -33,6 +33,9 @@ RUN npm install
 WORKDIR /tmp/cvat-canvas/
 RUN npm install
 
+#This prevents an issue building node-gyp.js later
+RUN apk add g++ make python
+
 # Install cvat-ui dependencies
 WORKDIR /tmp/cvat-ui/
 RUN npm install
